@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { ProductProps } from "../products/ProductsList"
-import { Button } from "../products/main"
-import styled from "styled-components"
-import { ThumbNail } from "../products/Product"
+import { ThumbNail } from "../../styles/commonStyle"
+import * as D from "../../styles/DetailStyle"
 
 interface ProductInfo extends ProductProps {
   description: string
@@ -33,52 +32,27 @@ export default function Detail() {
     setProductImg(image)
   }
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginTop: "30px",
-      }}
-    >
-      <ReturnBtn onClick={() => navigate(-1)}>목록으로 돌아가기</ReturnBtn>
+    <D.Container>
+      <D.ReturnBtn onClick={() => navigate(-1)}>목록으로 돌아가기</D.ReturnBtn>
 
       {productInfo && (
-        <DetailContainer>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginRight: "20px",
-            }}
-          >
+        <D.DetailContainer>
+          <D.ImgBox>
             <ThumbNail src={productImg} alt={productInfo.title} />
-            <ImgList>
+            <D.ImgList>
               {productInfo.images.map((image, idx) => (
-                <Img
+                <D.Img
                   key={idx}
                   src={image}
                   onClick={() => onClickImg(image)}
                   alt=""
                 />
               ))}
-            </ImgList>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              marginTop: "20px",
-              marginLeft: "20px",
-            }}
-          >
-            <h1 style={{ fontSize: "18px", marginBottom: "10px" }}>
-              Product Info
-            </h1>
-            <table
-              style={{ borderSpacing: "10px", borderCollapse: "separate" }}
-            >
+            </D.ImgList>
+          </D.ImgBox>
+          <D.InfoBox>
+            <D.InfoTitle>Product Info</D.InfoTitle>
+            <D.Table>
               <tbody>
                 <tr>
                   <td>brand</td>
@@ -93,32 +67,14 @@ export default function Detail() {
                   <td>${productInfo.price}</td>
                 </tr>
                 <tr>
-                  <td style={{ verticalAlign: "top" }}>description</td>
+                  <D.Td style={{ verticalAlign: "top" }}>description</D.Td>
                   <td>{productInfo.description}</td>
                 </tr>
               </tbody>
-            </table>
-          </div>
-        </DetailContainer>
+            </D.Table>
+          </D.InfoBox>
+        </D.DetailContainer>
       )}
-    </div>
+    </D.Container>
   )
 }
-
-const ReturnBtn = styled(Button)`
-  margin: 20px;
-`
-const DetailContainer = styled.div`
-  display: flex;
-  max-width: 800px;
-  margin-top: 80px;
-`
-const ImgList = styled.div`
-  margin-top: 4px;
-`
-const Img = styled.img`
-  width: 50px;
-  height: 50px;
-  margin: 2px;
-  cursor: pointer;
-`

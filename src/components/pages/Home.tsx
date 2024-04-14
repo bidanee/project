@@ -1,9 +1,9 @@
-import Main from "../products/main"
+import Search from "../products/Search"
 
 export default function Home() {
   return (
-    <div>
-      <Main />
-    </div>
+    <>
+      <Search />
+    </>
   )
 }

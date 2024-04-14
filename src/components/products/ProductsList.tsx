@@ -1,7 +1,7 @@
-import styled from "styled-components"
 import { useEffect, useState } from "react"
 import Product from "./Product"
-import { Button } from "./main"
+
+import * as C from "../../styles/commonStyle"
 
 export interface ProductProps {
   id: number
@@ -42,7 +42,7 @@ export default function ProductsList() {
 
   return (
     <div>
-      <Lists>
+      <C.Lists>
         {items.length > 0 &&
           items.map((item) => (
             <Product
@@ -54,7 +54,7 @@ export default function ProductsList() {
               price={item.price}
             />
           ))}
-      </Lists>
+      </C.Lists>
       {showMore && (
         <div
           style={{
@@ -63,15 +63,9 @@ export default function ProductsList() {
             margin: "10px",
           }}
         >
-          <Button onClick={onClickShowMore}>더보기</Button>
+          <C.Button onClick={onClickShowMore}>더보기</C.Button>
         </div>
       )}
     </div>
   )
 }
-
-export const Lists = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`

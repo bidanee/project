@@ -1,28 +1,15 @@
 import { useEffect, useState } from "react"
 
 import Product from "./Product"
-import ProductsList, { Lists, ProductProps } from "./ProductsList"
-import styled from "styled-components"
+import ProductsList, { ProductProps } from "./ProductsList"
+import { Button, Lists } from "../../styles/commonStyle"
+import * as M from "../../styles/mainStyle"
 
-export default function Main() {
+export default function Search() {
   const [searchValue, setSearchValue] = useState<string>("")
   const [items, setItems] = useState<ProductProps[]>([])
   const [noItemMsg, setNoItemMsg] = useState<boolean>(false)
 
-  useEffect(() => {
-    const getSearchValue = sessionStorage.getItem("searchValue") || ""
-    const getItemsJSON = sessionStorage.getItem("items")
-    const getItems = getItemsJSON ? JSON.parse(getItemsJSON) : []
-    setSearchValue(getSearchValue)
-    setItems(getItems)
-
-    const getScrollPosition = sessionStorage.getItem("scrollPosition") || "0"
-    window.scrollTo({
-      top: parseInt(getScrollPosition),
-      left: 0,
-      behavior: "auto",
-    })
-  }, [])
   const onClickSearch = async () => {
     if (searchValue.length === 0) return
     try {
@@ -43,6 +30,27 @@ export default function Main() {
       onClickSearch()
     }
   }
+  const onClickTotal = () => {
+    setItems([])
+    setSearchValue("")
+    sessionStorage.setItem("scrollPosition", "0")
+    sessionStorage.setItem("searchValue", "")
+    sessionStorage.setItem("items", "")
+  }
+  useEffect(() => {
+    const getSearchValue = sessionStorage.getItem("searchValue") || ""
+    const getItemsJSON = sessionStorage.getItem("items")
+    const getItems = getItemsJSON ? JSON.parse(getItemsJSON) : []
+    setSearchValue(getSearchValue)
+    setItems(getItems)
+
+    const getScrollPosition = sessionStorage.getItem("scrollPosition") || "0"
+    window.scrollTo({
+      top: parseInt(getScrollPosition),
+      left: 0,
+      behavior: "auto",
+    })
+  }, [])
   useEffect(() => {
     const handleScroll = () => {
       sessionStorage.setItem("scrollPosition", window.scrollY.toString())
@@ -55,8 +63,8 @@ export default function Main() {
   }, [])
   return (
     <div>
-      <SearchBox>
-        <Input
+      <M.SearchBox>
+        <M.Input
           type="text"
           placeholder="검색어를 입력해주세요"
           value={searchValue}
@@ -66,7 +74,8 @@ export default function Main() {
         <Button type="button" onClick={onClickSearch}>
           검색
         </Button>
-      </SearchBox>
+        <Button onClick={onClickTotal}>전체보기</Button>
+      </M.SearchBox>
       {items.length !== 0 ? (
         <Lists>
           {items.map((item) => (
@@ -88,36 +97,3 @@ export default function Main() {
     </div>
   )
 }
-
-const SearchBox = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  padding-bottom: 10px;
-`
-const Input = styled.input`
-  outline: none;
-  width: 300px;
-  height: 40px;
-  padding-left: 10px;
-  margin-right: 2px;
-  border: 1px solid black;
-  border-radius: 4px;
-`
-
-export const Button = styled.button`
-  padding: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
-  border: 1px solid black;
-  border-radius: 4px;
-  cursor: pointer;
-  &:hover {
-    background-color: black;
-    color: white;
-  }
-  &:active {
-    position: relative;
-    top: 2px;
-  }
-`
